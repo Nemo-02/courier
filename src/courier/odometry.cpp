@@ -19,6 +19,8 @@ float yPos = 0;
 float sV;
 float sS;
 
+float MCLParticles = 144;
+
 std::vector<float> DeltaCoords;
 
 void updateDeltas(){
@@ -61,6 +63,25 @@ void odomCalc(){
   yPos = yPos + deltaY;
 }
 
+void mclInit(){
+  for (int i = 0; i < MCLParticles; i++) {
+    float x = rand() % 144;
+    float y = rand() % 144;
+    particles.push_back(particle(x, y, 1.0 / MCLParticles));
+  }
+}
+
+
+void mclStep(){
+  // move each particle by odom deltas along with noise and set heading to theta 
+  
+  // simulate readings for each particle and then compare them to actual readings
+
+  // weight each particle (1/sigma*sqrt(2*pi)*e^-((reading - actual)^2/(2*sigma^2)))
+
+  // Resample particles based on weight using Stochastic Universal Sampling
+}
+
 
 
 void odomDrive(void* param){
@@ -84,6 +105,9 @@ while (go==1){
   updateDeltas();
   odomCalc();
   updatePrev();
+  if (params->mcl == true){
+
+  }
 
   pros::delay(10);
 }

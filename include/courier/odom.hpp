@@ -38,6 +38,7 @@ struct initParams {
         pros::IMU* imu;
         pros::MotorGroup* driveMotor;
         pros::Rotation* horiz;
+        bool mcl = false;
 
         initParams(pros::IMU* val, pros::MotorGroup* val1, pros::Rotation* val2) : imu(val), driveMotor(val1), horiz(val2) {}
     };
@@ -56,6 +57,18 @@ struct odomParams {
     };
 
 
+class particle{
+    public:
+        float x;
+        float y;
+        float weight;
+        particle(float x_in, float y_in, float weight_in){
+            x = x_in;
+            y = y_in;
+            weight = weight_in;
+        }
+};
+
 
 void odomCalc();
 void updateDeltas();
@@ -73,5 +86,9 @@ std::vector<double> getVals();
 Point getPoint();
 float getAng();
 void setOdom(float x, float y);
+
+
+std::vector<particle> particles;
+std::vector<std::vector<double>> fieldMap = {{0,0},{144,0},{144,144},{0,144}};
 
 }
