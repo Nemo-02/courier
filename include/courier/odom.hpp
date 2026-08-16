@@ -1,9 +1,10 @@
 #pragma once
 #include <vector>
 #include <cmath>
+#include <random>
 #include "main.h" // IWYU pragma: keep
 #include "courier/util.hpp"
-#include <vector>
+#include <cstdlib>
 #include "courier/util.hpp"
 #include "pros/motor_group.hpp"
 #include "pros/motors.hpp"
@@ -56,6 +57,26 @@ struct odomParams {
         odomParams(pros::IMU* val, pros::Rotation* val1, pros::Rotation* val2) : imu(val), vert(val1), horiz(val2) {}
     };
 
+struct MCLsensor{
+        pros::Distance* sensor;
+        float offset;
+        float turn;
+        MCLsensor(pros::Distance* val, float val1, float val2) : sensor(val), offset(val1), turn(val2) {}
+    };
+
+struct MCLParams{
+        float sigma;
+        float MCLParticles;
+        std::vector<MCLsensor> sensors;
+
+}
+
+struct MCLreading{
+        float reading;
+        float offset;
+        float turn;
+        MCLreading(float val, float val1, float val2) : reading(val), offset(val1), turn(val2) {}
+    };
 
 class particle{
     public:
@@ -89,6 +110,6 @@ void setOdom(float x, float y);
 
 
 std::vector<particle> particles;
-std::vector<std::vector<double>> fieldMap = {{0,0},{144,0},{144,144},{0,144}};
+std::vector<std::vector<double>> fieldMap = {{0,0},{144,0},{144,144},{0,144},{0,0}};
 
 }
